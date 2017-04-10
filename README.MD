@@ -1,6 +1,6 @@
 # Easyac Workers
 
-PUB/SUB worker that waits commands from Easyac API like `worker:login` and `worker:sync`.
+PUB/SUB worker that wait for commands from Easyac API like `worker:login` and `worker:sync`.
 
 `worker:login`: Expect student credentials, calls Easyac Crawler, auth the student and re-send to API the authenticated cookie.
 
