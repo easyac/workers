@@ -1,0 +1,14 @@
+{
+  "name": "easyac-workers",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "DEBUG=worker node index.js"
+  },
+  "dependencies": {
+    "debug": "^2.6.3",
+    "easyac-crawler": "^0.2.4",
+    "node-redis-pubsub": "^1.0.2"
+  }
+}
