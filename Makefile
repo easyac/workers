@@ -9,7 +9,7 @@ docker-start-redis:
 	-@docker rm redis
 	docker run --name redis -p 6379:6379 -d redis redis-server --appendonly yes
 
-docker-run: start-redis
+docker-run: docker-start-redis
 	-@docker stop easyac-worker
 	-@docker rm easyac-worker
 	docker run -d \
@@ -18,6 +18,10 @@ docker-run: start-redis
 	--env REDIS_HOST=redis \
 	--env REDIS_PORT=6379 \
 	easyac/worker
+
+docker-stop:
+	-@docker stop easyac-worker redis
+	-@docker rm easyac-worker redis
 
 docker-build:
 	docker build -t easyac/worker:latest .
