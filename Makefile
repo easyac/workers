@@ -23,5 +23,5 @@ docker-stop:
 docker-build:
 	docker build -t easyac/worker:latest .
 
-push:
+docker-push:
 	docker push easyac/worker:latest
