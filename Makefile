@@ -1,7 +1,6 @@
 .PHONY: start-redis, run
 
 run:
-	yarn
 	npm start
 
 docker-start-redis:
@@ -9,9 +8,7 @@ docker-start-redis:
 	-@docker rm redis
 	docker run --name redis -p 6379:6379 -d redis redis-server --appendonly yes
 
-docker-run: docker-start-redis
-	-@docker stop easyac-worker
-	-@docker rm easyac-worker
+docker-run:
 	docker run -d \
 	--name easyac-worker \
 	--link redis:redis \
