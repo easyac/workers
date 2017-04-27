@@ -4,11 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "DEBUG=worker ./node_modules/nodemon/bin/nodemon.js ./index.js"
+    "start": "DEBUG=worker,crawler ./node_modules/nodemon/bin/nodemon.js ./index.js"
   },
   "dependencies": {
     "debug": "^2.6.3",
-    "easyac-crawler": "^0.2.4",
+    "easyac-crawler": "^0.3",
     "node-redis-pubsub": "^1.0.2"
   },
   "devDependencies": {

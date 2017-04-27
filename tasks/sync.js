@@ -9,7 +9,7 @@ module.exports = (data, nrp) => {
   StudentBot.get()
     .then(() => StudentBot.getTurmas())
     .then((botData) => {
-      debug('Syncing found classes for %s: %o', username, botData);
+      debug('Syncing found classes for %s: %s', username, JSON.stringify(botData));
 
       if (!botData || !botData.turmas) {
         debug('Data not found');
