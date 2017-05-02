@@ -24,12 +24,12 @@ queue.process('worker:login', 2, (job, done) => {
   Tasks.login(data)
   .then((res) => {
     debug(res);
-    sendToApi('save-cookie', { data: res });
+    sendToApi('save-cookie', res);
     done();
   })
   .catch((err) => {
     debug(err);
-    sendToApi('login-error', { data: err });
+    sendToApi('login-error', err);
     done();
   });
 });
@@ -39,12 +39,18 @@ queue.process('worker:sync', 3, (job, done) => {
   Tasks.sync(data)
   .then((res) => {
     debug(res);
-    sendToApi('save-classes', { data: res });
+    sendToApi('save-classes', res);
     done();
   })
   .catch((err) => {
     debug(err);
-    sendToApi('sync-error', { data: err });
+    sendToApi('sync-error', err);
     done();
   });
+});
+
+queue.process('worker:notify-login', 2, (job, done) => {
+  const { data } = job;
+  debug('%s %o', 'worker:notify-login', data);
+  done();
 });

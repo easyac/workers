@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "DEBUG=worker,crawler ./node_modules/nodemon/bin/nodemon.js ./index.js"
+    "start": "DEBUG=worker,crawler ./node_modules/nodemon/bin/nodemon.js ./index.js",
+    "run-dashboard": "./node_modules/kue/bin/kue-dashboard -p 3050 -r redis://127.0.0.1:6379 -q prefix"
   },
   "dependencies": {
     "debug": "^2.6.3",
