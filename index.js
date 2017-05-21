@@ -44,7 +44,7 @@ queue.process('worker:login', 2, (job, done) => {
   })
   .catch((err) => {
     debug(err);
-    sendToApi('login-error', err);
+    sendToApi('login-error', data);
     done();
   });
 });
@@ -77,6 +77,8 @@ queue.process('worker:notify-login', 2, (job, done) => {
     data: {
       title: 'Easyac: Erro ao conectar no portal',
       message: 'Verifique os seus dados e tente novamente',
+      isSyncing: false,
+      type: 'popup',
     },
     notification: {
       title: 'Easyac: Erro ao conectar no portal',
@@ -107,6 +109,8 @@ queue.process('worker:notify-sync', 2, (job, done) => {
     data: {
       title: 'Easyac: Dados prontos!',
       message: 'Os dados estão atualizados para consulta',
+      isSyncing: false,
+      type: 'popup',
     },
     notification: {
       title: 'Easyac: Dados prontos!',
@@ -138,6 +142,8 @@ queue.process('worker:notify-absense', 2, (job, done) => {
     data: {
       title: 'Easyac: Novas faltas publicadas',
       message: data.class.descricaoDisciplina,
+      isSyncing: false,
+      type: 'refresh',
     },
     notification: {
       title: 'Easyac: Novas faltas publicadas',
@@ -169,6 +175,8 @@ queue.process('worker:notify-grade', 2, (job, done) => {
     data: {
       title: 'Easyac: Novas notas publicadas',
       message: data.class.descricaoDisciplina,
+      isSyncing: false,
+      type: 'refresh',
     },
     notification: {
       title: 'Easyac: Novas notas publicadas',

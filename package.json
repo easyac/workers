@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "debug": "^2.6.3",
-    "easyac-crawler": "^0.3.1",
+    "easyac-crawler": "^0.3.2",
     "kue": "^0.11.5",
     "node-gcm": "^0.14.6"
   },
