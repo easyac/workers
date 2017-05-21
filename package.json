@@ -4,12 +4,14 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "DEBUG=worker,crawler ./node_modules/nodemon/bin/nodemon.js ./index.js"
+    "start": "DEBUG=worker,crawler ./node_modules/nodemon/bin/nodemon.js ./index.js",
+    "run-dashboard": "./node_modules/kue/bin/kue-dashboard -p 3050 -r redis://127.0.0.1:6379 -q prefix"
   },
   "dependencies": {
     "debug": "^2.6.3",
-    "easyac-crawler": "^0.3",
-    "kue": "^0.11.5"
+    "easyac-crawler": "^0.3.1",
+    "kue": "^0.11.5",
+    "node-gcm": "^0.14.6"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
