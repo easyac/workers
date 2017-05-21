@@ -94,7 +94,6 @@ queue.process('worker:notify-login', 2, (job, done) => {
   });
 });
 
-// Send in error case only
 queue.process('worker:notify-sync', 2, (job, done) => {
   const { data } = job;
   const retryTimes = 2;
@@ -122,6 +121,72 @@ queue.process('worker:notify-sync', 2, (job, done) => {
       debug('%s %o', 'worker:notify-sync err', err);
     } else {
       debug('%s %o', 'worker:notify-sync', result);
+    }
+    done();
+  });
+});
+
+queue.process('worker:notify-absense', 2, (job, done) => {
+  const { data } = job;
+  const retryTimes = 2;
+  const sender = new gcm.Sender(process.env.FGM_KEY);
+
+  const message = new gcm.Message({
+    collapseKey: 'absense',
+    tag: 'absense',
+    priority: 'normal',
+    contentAvailable: true,
+    delayWhileIdle: true,
+    timeToLive: 3,
+    data: {
+      title: 'Easyac: Novas faltas publicadas',
+      message: data.class.descricaoDisciplina,
+    },
+    notification: {
+      title: 'Easyac: Novas faltas publicadas',
+      body: data.class.descricaoDisciplina,
+      icon: 'ic_launcher',
+    },
+  });
+
+  sender.send(message, [data.devices.android], retryTimes, (err, result) => {
+    if (err) {
+      debug('%s %o', 'worker:notify-absense err', err);
+    } else {
+      debug('%s %o', 'worker:notify-absense', result);
+    }
+    done();
+  });
+});
+
+queue.process('worker:notify-grade', 2, (job, done) => {
+  const { data } = job;
+  const retryTimes = 2;
+  const sender = new gcm.Sender(process.env.FGM_KEY);
+
+  const message = new gcm.Message({
+    collapseKey: 'grade',
+    tag: 'grade',
+    priority: 'normal',
+    contentAvailable: true,
+    delayWhileIdle: true,
+    timeToLive: 3,
+    data: {
+      title: 'Easyac: Novas notas publicadas',
+      message: data.class.descricaoDisciplina,
+    },
+    notification: {
+      title: 'Easyac: Novas notas publicadas',
+      body: data.class.descricaoDisciplina,
+      icon: 'ic_launcher',
+    },
+  });
+
+  sender.send(message, [data.devices.android], retryTimes, (err, result) => {
+    if (err) {
+      debug('%s %o', 'worker:notify-grade err', err);
+    } else {
+      debug('%s %o', 'worker:notify-grade', result);
     }
     done();
   });
