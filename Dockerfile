@@ -43,9 +43,4 @@ RUN npm install --production --silent
 
 EXPOSE 3000
 
-# Default command. Assumes our file is app.js and our screen size is 1024x768
-
-# Build: docker build -t nightmarejs-webservice .
-# Usage: docker run -p 8889:8889 -d nightmarejs-webservice
-
 CMD xvfb-run --server-args="-screen 0 1024x768x24" node index.js

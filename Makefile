@@ -14,14 +14,14 @@ docker-run:
 	--link redis:redis \
 	--env REDIS_HOST=redis \
 	--env REDIS_PORT=6379 \
-	easyac/worker
+	easyac/workers
 
 docker-stop:
 	-@docker stop easyac-worker redis
 	-@docker rm easyac-worker redis
 
 docker-build:
-	docker build -t easyac/worker:latest .
+	docker build -t easyac/workers:latest .
 
 docker-push:
-	docker push easyac/worker:latest
+	docker push easyac/workers:latest

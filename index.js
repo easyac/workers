@@ -7,9 +7,14 @@ const sender = new gcm.Sender(process.env.FGM_KEY);
 const retryTimes = 2;
 
 const config = {
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+  },
 };
+
+debug('Config %o', config);
+debug('Config sender %s', process.env.FGM_KEY);
 
 const queue = kue.createQueue(config);
 
