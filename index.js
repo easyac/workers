@@ -10,13 +10,23 @@ const config = {
 
 const queue = kue.createQueue(config);
 
+function enqueueJob(type, data) {
+  debug('enqueueJob, %s ', type);
+
+  queue
+    .create(`worker:${type}`, data)
+    .priority('normal')
+    .save((err) => {
+      if (err) debug(err);
+    });
+}
+
 function sendToApi(type, data) {
   queue
     .create(`api:${type}`, data)
     .priority('normal')
     .save((err) => {
       if (err) debug(err);
-      debug('cookie for %s sent to API', data.username);
     });
 }
 
@@ -26,6 +36,7 @@ queue.process('worker:login', 2, (job, done) => {
   .then((res) => {
     debug(res);
     sendToApi('save-cookie', res);
+    enqueueJob('sync', res);
     done();
   })
   .catch((err) => {
@@ -79,7 +90,39 @@ queue.process('worker:notify-login', 2, (job, done) => {
     } else {
       debug('%s %o', 'worker:notify-login', result);
     }
+    done();
+  });
+});
 
+// Send in error case only
+queue.process('worker:notify-sync', 2, (job, done) => {
+  const { data } = job;
+  const retryTimes = 2;
+  const sender = new gcm.Sender(process.env.FGM_KEY);
+
+  const message = new gcm.Message({
+    collapseKey: 'easyac',
+    priority: 'high',
+    contentAvailable: true,
+    delayWhileIdle: true,
+    timeToLive: 3,
+    data: {
+      title: 'Easyac: Dados prontos!',
+      message: 'Os dados estão atualizados para consulta',
+    },
+    notification: {
+      title: 'Easyac: Dados prontos!',
+      body: 'Os dados estão atualizados para consulta',
+      icon: 'ic_launcher',
+    },
+  });
+
+  sender.send(message, [data.devices.android], retryTimes, (err, result) => {
+    if (err) {
+      debug('%s %o', 'worker:notify-sync err', err);
+    } else {
+      debug('%s %o', 'worker:notify-sync', result);
+    }
     done();
   });
 });
