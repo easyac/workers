@@ -3,6 +3,9 @@ const gcm = require('node-gcm');
 const debug = require('debug')('worker');
 const Tasks = require('./tasks');
 
+const sender = new gcm.Sender(process.env.FGM_KEY);
+const retryTimes = 2;
+
 const config = {
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
@@ -64,12 +67,10 @@ queue.process('worker:sync', 3, (job, done) => {
 // Send in error case only
 queue.process('worker:notify-login', 2, (job, done) => {
   const { data } = job;
-  const retryTimes = 2;
-  const sender = new gcm.Sender(process.env.FGM_KEY);
 
   const message = new gcm.Message({
     collapseKey: 'easyac',
-    priority: 'high',
+    priority: 'normal',
     contentAvailable: true,
     delayWhileIdle: true,
     timeToLive: 3,
@@ -96,8 +97,6 @@ queue.process('worker:notify-login', 2, (job, done) => {
 
 queue.process('worker:notify-sync', 2, (job, done) => {
   const { data } = job;
-  const retryTimes = 2;
-  const sender = new gcm.Sender(process.env.FGM_KEY);
 
   const message = new gcm.Message({
     collapseKey: 'easyac',
@@ -128,8 +127,6 @@ queue.process('worker:notify-sync', 2, (job, done) => {
 
 queue.process('worker:notify-absense', 2, (job, done) => {
   const { data } = job;
-  const retryTimes = 2;
-  const sender = new gcm.Sender(process.env.FGM_KEY);
 
   const message = new gcm.Message({
     collapseKey: 'absense',
@@ -161,8 +158,6 @@ queue.process('worker:notify-absense', 2, (job, done) => {
 
 queue.process('worker:notify-grade', 2, (job, done) => {
   const { data } = job;
-  const retryTimes = 2;
-  const sender = new gcm.Sender(process.env.FGM_KEY);
 
   const message = new gcm.Message({
     collapseKey: 'grade',
