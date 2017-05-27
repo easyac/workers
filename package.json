@@ -11,6 +11,7 @@
     "debug": "^2.6.3",
     "easyac-crawler": "^0.3.2",
     "kue": "^0.11.5",
+    "kue-scheduler": "^0.7.2",
     "node-gcm": "^0.14.6"
   },
   "devDependencies": {

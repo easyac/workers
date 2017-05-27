@@ -1,9 +1,11 @@
-const kue = require('kue');
+const kue = require('kue-scheduler');
 const gcm = require('node-gcm');
 const debug = require('debug')('worker');
 const Tasks = require('./tasks');
 
 const sender = new gcm.Sender(process.env.FGM_KEY);
+const SCHEDULED_SYNC_STORED = 'SCHEDULED_SYNC_STORED';
+const SCHEDULE_DELTA = '1 hour';
 const retryTimes = 2;
 
 const config = {
@@ -198,4 +200,17 @@ queue.process('worker:notify-grade', 2, (job, done) => {
     }
     done();
   });
+});
+
+const scheduledSync = queue
+  .createJob(SCHEDULED_SYNC_STORED, { sync: true })
+  .priority('normal')
+  .unique(SCHEDULED_SYNC_STORED);
+
+queue.every(SCHEDULE_DELTA, scheduledSync);
+
+queue.process(SCHEDULED_SYNC_STORED, (job, done) => {
+  debug('Asks API for users to sync');
+  sendToApi('sync-users', { sync: true });
+  done();
 });
